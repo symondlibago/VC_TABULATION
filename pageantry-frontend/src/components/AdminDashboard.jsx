@@ -108,6 +108,7 @@ const AdminDashboard = () => {
       'overall': 'overall',
       'sports_attire': 'top_sports_attire',
       'swimsuit': 'top_swimsuit',
+      'talent': 'top_talent',
       'gown': 'top_gown',
       'qa': 'top_qa'
     };
@@ -120,6 +121,7 @@ const AdminDashboard = () => {
       'overall': 'Overall Results',
       'sports_attire': 'Sports Attire Results',
       'swimsuit': 'Swimsuit Results',
+      'talent': 'Talent Results',
       'gown': 'Gown Results',
       'qa': 'Q&A Results'
     };
@@ -167,7 +169,7 @@ const AdminDashboard = () => {
 
   // Export all categories function
   const handleExportAll = async (format) => {
-    const categories = ['overall', 'sports_attire', 'swimsuit', 'gown', 'qa'];
+    const categories = ['overall', 'sports_attire', 'swimsuit', 'talent', 'gown', 'qa'];
     setExportLoading(true);
     
     try {
@@ -453,7 +455,8 @@ const AdminDashboard = () => {
                       <TableHead>Name</TableHead>
                       <TableHead>Sports Attire (20%)</TableHead>
                       <TableHead>Swimsuit (20%)</TableHead>
-                      <TableHead>Gown (30%)</TableHead>
+                      <TableHead>Talent (10%)</TableHead>
+                      <TableHead>Gown (20%)</TableHead>
                       <TableHead>Q&A (30%)</TableHead>
                       <TableHead>Total</TableHead>
                       <TableHead>Actions</TableHead>
@@ -479,6 +482,9 @@ const AdminDashboard = () => {
                         </TableCell>
                         <TableCell className={getScoreColor(candidate.scores?.swimsuit)}>
                           {formatScore(candidate.scores?.swimsuit)}
+                        </TableCell>
+                        <TableCell className={getScoreColor(candidate.scores?.talent)}>
+                          {formatScore(candidate.scores?.talent)}
                         </TableCell>
                         <TableCell className={getScoreColor(candidate.scores?.gown)}>
                           {formatScore(candidate.scores?.gown)}
@@ -545,6 +551,7 @@ const AdminDashboard = () => {
                       <TableHead>Status</TableHead>
                       <TableHead>Sports Attire</TableHead>
                       <TableHead>Swimsuit</TableHead>
+                      <TableHead>Talent</TableHead>
                       <TableHead>Gown</TableHead>
                       <TableHead>Q&A</TableHead>
                       <TableHead>Actions</TableHead>
@@ -571,6 +578,11 @@ const AdminDashboard = () => {
                           <TableCell>
                             <div className="text-sm">
                               {judge.progress?.swimsuit?.percentage || 0}%
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="text-sm">
+                              {judge.progress?.talent?.percentage || 0}%
                             </div>
                           </TableCell>
                           <TableCell>
@@ -632,6 +644,7 @@ const AdminDashboard = () => {
                         <SelectItem value="overall">Overall</SelectItem>
                         <SelectItem value="sports_attire">Sports Attire</SelectItem>
                         <SelectItem value="swimsuit">Swimsuit</SelectItem>
+                        <SelectItem value="talent">Talent</SelectItem>
                         <SelectItem value="gown">Gown</SelectItem>
                         <SelectItem value="qa">Q&A</SelectItem>
                       </SelectContent>
@@ -669,6 +682,9 @@ const AdminDashboard = () => {
                         <DropdownMenuItem onClick={() => handleExportSpecific('pdf', 'swimsuit')}>
                           <Download className="h-4 w-4 mr-2" />
                           Swimsuit (PDF)
+                        </DropdownMenuItem><DropdownMenuItem onClick={() => handleExportSpecific('pdf', 'talent')}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Talent (PDF)
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleExportSpecific('pdf', 'gown')}>
                           <Download className="h-4 w-4 mr-2" />
@@ -705,6 +721,7 @@ const AdminDashboard = () => {
                         <>
                           <TableHead>Sports Attire</TableHead>
                           <TableHead>Swimsuit</TableHead>
+                          <TableHead>Talent</TableHead>
                           <TableHead>Gown</TableHead>
                           <TableHead>Q&A</TableHead>
                           <TableHead>Total</TableHead>
@@ -762,6 +779,7 @@ const AdminDashboard = () => {
                           <>
                             <TableCell>{formatScore(item.scores_breakdown?.sports_attire)}</TableCell>
                             <TableCell>{formatScore(item.scores_breakdown?.swimsuit)}</TableCell>
+                            <TableCell>{formatScore(item.scores_breakdown?.talent)}</TableCell>
                             <TableCell>{formatScore(item.scores_breakdown?.gown)}</TableCell>
                             <TableCell>{formatScore(item.scores_breakdown?.qa)}</TableCell>
                             <TableCell className="font-bold">

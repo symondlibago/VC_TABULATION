@@ -2,16 +2,17 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { candidatesAPI, scoresAPI } from '../lib/api';
 import { 
-  Crown, 
-  Star, 
+  Crown,
+  MicVocal,
   CheckCircle, 
   Clock, 
   LogOut,
-  Trophy,
+  Volleyball,
   User,
   Loader2,
   BarChart3,
-  Target
+  Target,
+  Waves
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -32,7 +33,7 @@ const JudgeDashboard = () => {
       id: 'sports_attire', 
       name: 'Sports Attire', 
       weight: '20%', 
-      icon: Trophy, 
+      icon: Volleyball, 
       color: 'from-blue-600 to-blue-800',
       bgColor: 'bg-blue-600',
       description: 'Athletic wear and fitness presentation'
@@ -41,15 +42,24 @@ const JudgeDashboard = () => {
       id: 'swimsuit', 
       name: 'Swimsuit', 
       weight: '20%', 
-      icon: Star, 
+      icon: Waves, 
       color: 'from-red-600 to-red-800',
       bgColor: 'bg-red-600',
       description: 'Swimwear presentation and confidence'
     },
     { 
+      id: 'talent', 
+      name: 'Talent', 
+      weight: '10%', 
+      icon: MicVocal, 
+      color: 'from-yellow-600 to-yellow-800',
+      bgColor: 'bg-yellow-600',
+      description: 'Talent and performance presentation'
+    },
+    { 
       id: 'gown', 
       name: 'Gown', 
-      weight: '30%', 
+      weight: '20%', 
       icon: Crown, 
       color: 'from-purple-600 to-purple-800',
       bgColor: 'bg-purple-600',
@@ -201,7 +211,7 @@ const JudgeDashboard = () => {
               <span className="text-foreground font-medium">{Math.round(overallProgress)}% Complete</span>
             </div>
             <Progress value={overallProgress} className="h-4" />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6">
               {categories.map((category) => {
                 const progress = getCategoryProgress(category.id);
                 const status = getCategoryStatus(category.id);

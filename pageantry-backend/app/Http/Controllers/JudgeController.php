@@ -43,6 +43,7 @@ class JudgeController extends Controller
                 'progress' => [
                     'sports_attire' => $judge->getJudgingProgress('sports_attire'),
                     'swimsuit' => $judge->getJudgingProgress('swimsuit'),
+                    'talent' => $judge->getJudgingProgress('talent'),
                     'gown' => $judge->getJudgingProgress('gown'),
                     'qa' => $judge->getJudgingProgress('qa'),
                 ],
@@ -113,6 +114,7 @@ class JudgeController extends Controller
                 'progress' => [
                     'sports_attire' => $judge->getJudgingProgress('sports_attire'),
                     'swimsuit' => $judge->getJudgingProgress('swimsuit'),
+                    'talent' => $judge->getJudgingProgress('talent'),
                     'gown' => $judge->getJudgingProgress('gown'),
                     'qa' => $judge->getJudgingProgress('qa'),
                 ],

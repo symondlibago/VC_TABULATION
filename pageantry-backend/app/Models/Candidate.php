@@ -46,10 +46,11 @@ class Candidate extends Model
     {
         $sportsAttire = $this->getAverageScore('sports_attire') * 0.20;
         $swimsuit = $this->getAverageScore('swimsuit') * 0.20;
-        $gown = $this->getAverageScore('gown') * 0.30;
+        $talent = $this->getAverageScore('talent') * 0.10;
+        $gown = $this->getAverageScore('gown') * 0.20;
         $qa = $this->getAverageScore('qa') * 0.30;
 
-        return $sportsAttire + $swimsuit + $gown + $qa;
+        return $sportsAttire + $swimsuit + $talent + $gown + $qa;
     }
 
     /**
@@ -60,6 +61,7 @@ class Candidate extends Model
         return [
             'sports_attire' => $this->getAverageScore('sports_attire'),
             'swimsuit' => $this->getAverageScore('swimsuit'),
+            'talent' => $this->getAverageScore('talent'),
             'gown' => $this->getAverageScore('gown'),
             'qa' => $this->getAverageScore('qa'),
             'total' => $this->getTotalScore()

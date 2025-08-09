@@ -62,6 +62,16 @@ class ExportController extends Controller
                 $title = 'Top Swimsuit Results';
                 break;
 
+                case 'top_talent':
+                    $results = $candidates->map(function ($candidate) {
+                        return [
+                            'candidate' => $candidate,
+                            'score' => $candidate->getAverageScore('talent')
+                        ];
+                    })->sortByDesc('score')->values();
+                    $title = 'Top Talent Results';
+                    break;
+
             case 'top_qa':
                 $results = $candidates->map(function ($candidate) {
                     return [
@@ -89,6 +99,7 @@ class ExportController extends Controller
                         'candidate' => $candidate,
                         'sports_attire' => $breakdown['sports_attire'],
                         'swimsuit' => $breakdown['swimsuit'],
+                        'talent' => $breakdown['talent'],
                         'gown' => $breakdown['gown'],
                         'qa' => $breakdown['qa'],
                         'total' => $breakdown['total']
@@ -145,6 +156,16 @@ class ResultsExport implements \Maatwebsite\Excel\Concerns\FromCollection,
                     ];
                 })->sortByDesc('swimsuit_score')->values();
 
+                case 'top_talent':
+                    return $candidates->map(function ($candidate, $index) {
+                        return [
+                            'rank' => $index + 1,
+                            'candidate_number' => $candidate->candidate_number,
+                            'name' => $candidate->name,
+                            'talent_score' => number_format($candidate->getAverageScore('talent'), 2)
+                        ];
+                    })->sortByDesc('talent_score')->values();
+
             case 'top_qa':
                 return $candidates->map(function ($candidate, $index) {
                     return [
@@ -174,6 +195,7 @@ class ResultsExport implements \Maatwebsite\Excel\Concerns\FromCollection,
                         'name' => $candidate->name,
                         'sports_attire' => number_format($breakdown['sports_attire'], 2),
                         'swimsuit' => number_format($breakdown['swimsuit'], 2),
+                        'talent' => number_format($breakdown['talent'], 2),
                         'gown' => number_format($breakdown['gown'], 2),
                         'qa' => number_format($breakdown['qa'], 2),
                         'total' => number_format($breakdown['total'], 2)
@@ -189,12 +211,14 @@ class ResultsExport implements \Maatwebsite\Excel\Concerns\FromCollection,
                 return ['Rank', 'Candidate #', 'Name', 'Gown Score'];
             case 'top_swimsuit':
                 return ['Rank', 'Candidate #', 'Name', 'Swimsuit Score'];
+                case 'top_talent':
+                    return ['Rank', 'Candidate #', 'Name', 'Talent Score'];
             case 'top_qa':
                 return ['Rank', 'Candidate #', 'Name', 'Q&A Score'];
             case 'top_sports_attire':
                 return ['Rank', 'Candidate #', 'Name', 'Sports Attire Score'];
             default:
-                return ['Rank', 'Candidate #', 'Name', 'Sports Attire (20%)', 'Swimsuit (20%)', 'Gown (30%)', 'Q&A (30%)', 'Total'];
+                return ['Rank', 'Candidate #', 'Name', 'Sports Attire (20%)', 'Swimsuit (20%)','Talent (10%)', 'Gown (20%)', 'Q&A (30%)', 'Total'];
         }
     }
 
