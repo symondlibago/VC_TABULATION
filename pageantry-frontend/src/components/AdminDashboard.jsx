@@ -10,11 +10,11 @@ import {
   Plus,
   Edit,
   Trash2,
-  Eye,
   LogOut,
   Settings,
   BarChart3,
-  Crown
+  Crown,
+  FileText
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -27,6 +27,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 import {
   Table,
   TableBody,
@@ -50,6 +58,7 @@ const AdminDashboard = () => {
   const [progress, setProgress] = useState(null);
   const [filter, setFilter] = useState('overall');
   const [loading, setLoading] = useState(true);
+  const [exportLoading, setExportLoading] = useState(false);
   
   // Modal states
   const [showAddCandidateModal, setShowAddCandidateModal] = useState(false);
@@ -93,6 +102,30 @@ const AdminDashboard = () => {
     }
   };
 
+  // Helper function to convert frontend filter to backend filter
+  const getBackendFilter = (frontendFilter) => {
+    const filterMapping = {
+      'overall': 'overall',
+      'sports_attire': 'top_sports_attire',
+      'swimsuit': 'top_swimsuit',
+      'gown': 'top_gown',
+      'qa': 'top_qa'
+    };
+    return filterMapping[frontendFilter] || 'overall';
+  };
+
+  // Helper function to get filter display name
+  const getFilterDisplayName = (filter) => {
+    const displayNames = {
+      'overall': 'Overall Results',
+      'sports_attire': 'Sports Attire Results',
+      'swimsuit': 'Swimsuit Results',
+      'gown': 'Gown Results',
+      'qa': 'Q&A Results'
+    };
+    return displayNames[filter] || 'Overall Results';
+  };
+
   const handleFilterChange = async (newFilter) => {
     setFilter(newFilter);
     try {
@@ -104,18 +137,50 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleExport = async (format) => {
+  // Enhanced export function that can handle specific categories
+  const handleExportSpecific = async (format, category = null) => {
     try {
-      const response = format === 'excel' 
-        ? await exportAPI.exportExcel(filter)
-        : await exportAPI.exportPdf(filter);
+      setExportLoading(true);
+      const exportFilter = category ? getBackendFilter(category) : getBackendFilter(filter);
+      const displayName = category ? getFilterDisplayName(category) : getFilterDisplayName(filter);
       
-      const filename = `pageant-results-${filter}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
+      const response = format === 'excel' 
+        ? await exportAPI.exportExcel(exportFilter)
+        : await exportAPI.exportPdf(exportFilter);
+      
+      const categoryName = category || filter;
+      const filename = `pageant-results-${categoryName}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
       downloadFile(response.data, filename);
-      showSuccess(`Results exported as ${format.toUpperCase()}`);
+      showSuccess(`${displayName} exported as ${format.toUpperCase()}`);
     } catch (error) {
       console.error('Export error:', error);
-      showError('Failed to export results');
+      showError(`Failed to export ${category ? getFilterDisplayName(category) : getFilterDisplayName(filter)}`);
+    } finally {
+      setExportLoading(false);
+    }
+  };
+
+  // Original export function for backward compatibility
+  const handleExport = async (format) => {
+    await handleExportSpecific(format);
+  };
+
+  // Export all categories function
+  const handleExportAll = async (format) => {
+    const categories = ['overall', 'sports_attire', 'swimsuit', 'gown', 'qa'];
+    setExportLoading(true);
+    
+    try {
+      for (const category of categories) {
+        await handleExportSpecific(format, category);
+        // Add a small delay between exports to prevent overwhelming the server
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      showSuccess(`All categories exported as ${format.toUpperCase()}`);
+    } catch (error) {
+      showError('Failed to export all categories');
+    } finally {
+      setExportLoading(false);
     }
   };
 
@@ -431,13 +496,6 @@ const AdminDashboard = () => {
                             <Button 
                               variant="ghost" 
                               size="sm"
-                              className="btn-hover-scale"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="sm"
                               onClick={() => handleEditCandidate(candidate)}
                               className="btn-hover-scale"
                             >
@@ -447,7 +505,7 @@ const AdminDashboard = () => {
                               variant="ghost" 
                               size="sm"
                               onClick={() => handleDeleteCandidate(candidate)}
-                              className="btn-hover-scale text-red-600 hover:text-red-700"
+                              className="btn-hover-scale text-red-600 hover:text-white-500"
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -553,7 +611,7 @@ const AdminDashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* Results Tab - ORIGINAL VERSION RESTORED */}
+          {/* Results Tab - ENHANCED VERSION */}
           <TabsContent value="results" className="space-y-6">
             <Card>
               <CardHeader>
@@ -561,7 +619,7 @@ const AdminDashboard = () => {
                   <div>
                     <CardTitle>Competition Results</CardTitle>
                     <CardDescription>
-                      View rankings and export results
+                      View rankings and export results for {getFilterDisplayName(filter)}
                     </CardDescription>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -578,14 +636,61 @@ const AdminDashboard = () => {
                         <SelectItem value="qa">Q&A</SelectItem>
                       </SelectContent>
                     </Select>
-                    <Button variant="outline" onClick={() => handleExport('excel')}>
+                    
+                    {/* Current Filter Export Buttons */}
+                    <Button 
+                      variant="outline" 
+                      onClick={() => handleExport('excel')}
+                      disabled={exportLoading}
+                    >
                       <Download className="h-4 w-4 mr-2" />
                       Excel
                     </Button>
-                    <Button variant="outline" onClick={() => handleExport('pdf')}>
-                      <Download className="h-4 w-4 mr-2" />
-                      PDF
-                    </Button>
+                    {/* Enhanced Export Dropdown */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" disabled={exportLoading}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Export All
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-56">
+                        <DropdownMenuLabel>Export by Category</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        
+                        <DropdownMenuItem onClick={() => handleExportSpecific('pdf', 'overall')}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Overall Results (PDF)
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleExportSpecific('pdf', 'sports_attire')}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Sports Attire (PDF)
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleExportSpecific('pdf', 'swimsuit')}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Swimsuit (PDF)
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleExportSpecific('pdf', 'gown')}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Gown (PDF)
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleExportSpecific('pdf', 'qa')}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Q&A (PDF)
+                        </DropdownMenuItem>
+                        
+                        <DropdownMenuSeparator />
+                        
+                        <DropdownMenuItem onClick={() => handleExportAll('pdf')}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Export All Categories (PDF)
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleExportAll('excel')}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Export All Categories (Excel)
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               </CardHeader>
