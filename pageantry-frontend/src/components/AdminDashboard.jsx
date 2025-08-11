@@ -1,21 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { candidatesAPI, judgesAPI, scoresAPI, exportAPI, downloadFile } from '../lib/api';
-import { 
-  Users, 
-  UserCheck, 
-  Trophy, 
-  Download, 
-  Filter,
-  Plus,
-  Edit,
-  Trash2,
-  LogOut,
-  Settings,
-  BarChart3,
-  Crown,
-  FileText
-} from 'lucide-react';
+import { Users, UserCheck, Trophy, Download, Filter, Plus, Edit, Trash2, LogOut, BarChart3, Crown } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
@@ -317,38 +303,29 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-accent/10">
       {/* Toast Notifications */}
       <ToastContainer toasts={toasts} removeToast={removeToast} />
 
       {/* Header */}
-      <header className="border-b bg-gradient-to-r from-primary to-secondary backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-gradient-to-br from-primary/10 via-background to-accent/10 backdrop-blur-sm sticky top-0 z-50 shadow-lg">
         <div className="mobile-container py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <Crown className="h-5 w-5 text-white" />
+              <div className="w-10 h-10 bg-black/20 rounded-full flex items-center justify-center">
+                <Crown className="h-5 w-5 text-black" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Admin Dashboard</h1>
-                <p className="text-sm text-white/80">Welcome, {user?.name}</p>
+                <h1 className="text-xl font-bold text-black">Admin Dashboard</h1>
+                <p className="text-sm text-black/80">Welcome, {user?.name}</p>
               </div>
             </div>
             <div className="flex items-center space-x-2">
               <Button
                 variant="outline"
                 size="sm"
-                className="bg-transparent text-white border-white hover:bg-white hover:text-black"
-              >
-                <Settings className="h-4 w-4 mr-2" />
-                Settings
-              </Button>
-
-              <Button
-                variant="outline"
-                size="sm"
                 onClick={logout}
-                className="bg-transparent text-white border-white hover:bg-white hover:text-black"
+                className="bg-gradient-to-br from-primary/10 via-background to-accent/10 backdrop-blur-sm hover:bg-white hover:text-black"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
@@ -396,7 +373,7 @@ const AdminDashboard = () => {
               <div className="text-2xl font-bold">
                 {progress ? Math.round(
                   Object.values(progress.categories_progress)
-                    .reduce((sum, cat) => sum + cat.percentage, 0) / 4
+                    .reduce((sum, cat) => sum + cat.percentage, 0) / 5
                 ) : 0}%
               </div>
               <p className="text-xs text-muted-foreground">

@@ -63,7 +63,7 @@ class CandidateController extends Controller
             $validated = $request->validate([
                 'candidate_number' => ['required', 'string', 'unique:candidates,candidate_number'],
                 'name' => 'required|string|max:255|min:2',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
                 'is_active' => 'boolean'
             ]);
 
@@ -132,7 +132,7 @@ class CandidateController extends Controller
         $request->validate([
             'candidate_number' => ['required', 'string', Rule::unique('candidates', 'candidate_number')->ignore($candidate->id)],
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
             'is_active' => 'boolean'
         ]);
 

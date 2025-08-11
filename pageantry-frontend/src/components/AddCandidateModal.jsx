@@ -118,11 +118,11 @@ const AddCandidateModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-modal-backdrop">
-      <Card className="w-full max-w-md bg-white shadow-2xl animate-modal-slide-in">
+    <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4 animate-modal-backdrop">
+      <Card className="w-full max-w-md bg-card shadow-2xl animate-modal-slide-in">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <div>
-            <CardTitle className="text-xl font-bold">
+            <CardTitle className="text-xl font-bold text-card-foreground">
               {isEditMode ? 'Edit Candidate' : 'Add New Candidate'}
             </CardTitle>
             <CardDescription>
@@ -174,8 +174,8 @@ const AddCandidateModal = ({
                     </Button>
                   </div>
                 ) : (
-                  <div className="w-24 h-24 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
-                    <User className="h-8 w-8 text-gray-400" />
+                  <div className="w-24 h-24 rounded-full border-2 border-dashed border-border flex items-center justify-center">
+                    <User className="h-8 w-8 text-muted-foreground" />
                   </div>
                 )}
                 
@@ -206,7 +206,7 @@ const AddCandidateModal = ({
                 Candidate Number
               </Label>
               <div className="relative">
-                <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="candidate_number"
                   type="text"
@@ -216,7 +216,7 @@ const AddCandidateModal = ({
                 />
               </div>
               {errors.candidate_number && (
-                <p className="text-sm text-red-600">{errors.candidate_number.message}</p>
+                <p className="text-sm text-destructive">{errors.candidate_number.message}</p>
               )}
             </div>
 
@@ -226,7 +226,7 @@ const AddCandidateModal = ({
                 Candidate Name
               </Label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="name"
                   type="text"
@@ -236,7 +236,7 @@ const AddCandidateModal = ({
                 />
               </div>
               {errors.name && (
-                <p className="text-sm text-red-600">{errors.name.message}</p>
+                <p className="text-sm text-destructive">{errors.name.message}</p>
               )}
             </div>
 

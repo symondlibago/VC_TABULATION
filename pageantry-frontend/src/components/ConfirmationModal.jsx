@@ -38,19 +38,19 @@ const ConfirmationModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-modal-backdrop">
-      <Card className="w-full max-w-md bg-white shadow-2xl animate-modal-slide-in">
+    <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4 animate-modal-backdrop">
+      <Card className="w-full max-w-md bg-card shadow-2xl animate-modal-slide-in">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <div className="flex items-center space-x-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-              type === 'danger' ? 'bg-red-100' : 'bg-yellow-100'
+              type === 'danger' ? 'bg-red-100 dark:bg-red-900/30' : 'bg-yellow-100 dark:bg-yellow-900/30'
             }`}>
               <AlertTriangle className={`h-5 w-5 ${
-                type === 'danger' ? 'text-red-600' : 'text-yellow-600'
+                type === 'danger' ? 'text-red-600 dark:text-red-400' : 'text-yellow-600 dark:text-yellow-400'
               }`} />
             </div>
             <div>
-              <CardTitle className="text-xl font-bold">{title}</CardTitle>
+              <CardTitle className="text-xl font-bold text-card-foreground">{title}</CardTitle>
               <CardDescription>
                 This action cannot be undone
               </CardDescription>
@@ -69,12 +69,12 @@ const ConfirmationModal = ({
 
         <CardContent className="space-y-6">
           <div className="space-y-3">
-            <p className="text-gray-700">
+            <p className="text-muted-foreground">
               {message}
             </p>
             {itemName && itemType && (
-              <div className="bg-gray-50 p-3 rounded-lg border">
-                <p className="text-sm text-gray-600">
+              <div className="bg-muted p-3 rounded-lg border">
+                <p className="text-sm text-muted-foreground">
                   <span className="font-medium">{itemType}:</span> {itemName}
                 </p>
               </div>

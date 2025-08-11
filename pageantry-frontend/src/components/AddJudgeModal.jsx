@@ -109,11 +109,11 @@ const AddJudgeModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-modal-backdrop">
-      <Card className="w-full max-w-md bg-white shadow-2xl animate-modal-slide-in">
+    <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4 animate-modal-backdrop">
+      <Card className="w-full max-w-md bg-card shadow-2xl animate-modal-slide-in">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <div>
-            <CardTitle className="text-xl font-bold">
+            <CardTitle className="text-xl font-bold text-card-foreground">
               {isEditMode ? 'Edit Judge' : 'Add New Judge'}
             </CardTitle>
             <CardDescription>
@@ -147,7 +147,7 @@ const AddJudgeModal = ({
                 Judge Name
               </Label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="name"
                   type="text"
@@ -157,7 +157,7 @@ const AddJudgeModal = ({
                 />
               </div>
               {errors.name && (
-                <p className="text-sm text-red-600">{errors.name.message}</p>
+                <p className="text-sm text-destructive">{errors.name.message}</p>
               )}
             </div>
 
@@ -167,7 +167,7 @@ const AddJudgeModal = ({
                 Email Address
               </Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
@@ -177,17 +177,17 @@ const AddJudgeModal = ({
                 />
               </div>
               {errors.email && (
-                <p className="text-sm text-red-600">{errors.email.message}</p>
+                <p className="text-sm text-destructive">{errors.email.message}</p>
               )}
             </div>
 
             {/* Password */}
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-medium">
-                Password {isEditMode && <span className="text-gray-500">(leave blank to keep current)</span>}
+                Password {isEditMode && <span className="text-muted-foreground">(leave blank to keep current)</span>}
               </Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="password"
                   type="password"
@@ -197,7 +197,7 @@ const AddJudgeModal = ({
                 />
               </div>
               {errors.password && (
-                <p className="text-sm text-red-600">{errors.password.message}</p>
+                <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
             </div>
 
