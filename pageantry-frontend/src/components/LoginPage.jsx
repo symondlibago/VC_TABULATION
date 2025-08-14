@@ -22,7 +22,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const { login, isAuthenticated, user } = useAuth();
   const location = useLocation();
 
@@ -56,16 +56,110 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 mobile-container">
-      <div className="w-full max-w-md animate-fade-in-scale">
-        <Card className="shadow-2xl border-0 bg-card/95 backdrop-blur-sm">
-          <CardHeader className="text-center space-y-4">
-            <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center animate-pulse-blue">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-rose-900 mobile-container relative overflow-hidden">
+      {/* Heavy Background Sparkles */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(50)].map((_, i) => (
+          <div
+            key={`bg-sparkle-${i}`}
+            className="absolute golden-sparkle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 4}s`,
+              animationDuration: `${2 + Math.random() * 3}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Falling Stars */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={`falling-star-${i}`}
+            className="absolute golden-falling-star"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${4 + Math.random() * 4}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Scattered Popping Stars */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(40)].map((_, i) => (
+          <div
+            key={`pop-star-${i}`}
+            className="absolute golden-pop-star"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 6}s`,
+              animationDuration: `${2 + Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="w-full max-w-md animate-fade-in-scale relative z-10">
+        {/* Form Area Sparkles */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={`form-sparkle-${i}`}
+              className="absolute golden-form-sparkle"
+              style={{
+                left: `${10 + Math.random() * 80}%`,
+                top: `${10 + Math.random() * 80}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${1.5 + Math.random() * 2}s`
+              }}
+            />
+          ))}
+        </div>
+
+        <Card className="shadow-2xl border-0 bg-card/95 backdrop-blur-sm relative overflow-hidden">
+          {/* Card Internal Sparkles */}
+          <div className="absolute inset-0 pointer-events-none">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={`card-sparkle-${i}`}
+                className="absolute golden-card-sparkle"
+                style={{
+                  left: `${5 + Math.random() * 90}%`,
+                  top: `${5 + Math.random() * 90}%`,
+                  animationDelay: `${Math.random() * 4}s`,
+                  animationDuration: `${2 + Math.random() * 2}s`
+                }}
+              />
+            ))}
+          </div>
+
+          <CardHeader className="text-center space-y-4 relative z-10">
+            <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center animate-pulse-blue relative">
               <Crown className="h-8 w-8 text-primary-foreground" />
+              {/* Crown Sparkles */}
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={`crown-sparkle-${i}`}
+                  className="absolute golden-crown-sparkle"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 2}s`
+                  }}
+                />
+              ))}
             </div>
             <div>
-              <CardTitle className="text-2xl font-bold text-foreground">
+              <CardTitle className="text-2xl font-bold text-foreground relative">
                 Pageantry System
+                {/* Title Sparkles */}
+                <div className="absolute -top-2 -right-2 golden-title-sparkle" />
+                <div className="absolute -bottom-1 -left-1 golden-title-sparkle" style={{animationDelay: '0.5s'}} />
               </CardTitle>
               <CardDescription className="text-muted-foreground mt-2">
                 Sign in to access the tabulation system
@@ -73,7 +167,7 @@ const LoginPage = () => {
             </div>
           </CardHeader>
 
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 relative z-10">
             {error && (
               <Alert variant="destructive" className="animate-slide-in-up">
                 <AlertDescription>{error}</AlertDescription>
@@ -81,23 +175,27 @@ const LoginPage = () => {
             )}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
+              <div className="space-y-2 relative">
                 <Label htmlFor="email" className="text-sm font-medium">
                   Email Address
                 </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  className="touch-target"
-                  {...register('email')}
-                />
+                <div className="relative">
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    className="touch-target"
+                    {...register('email')}
+                  />
+                  {/* Input Field Sparkles */}
+                  <div className="absolute -top-1 -right-1 golden-input-sparkle" />
+                </div>
                 {errors.email && (
                   <p className="text-sm text-destructive">{errors.email.message}</p>
                 )}
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 relative">
                 <Label htmlFor="password" className="text-sm font-medium">
                   Password
                 </Label>
@@ -122,40 +220,40 @@ const LoginPage = () => {
                       <Eye className="h-4 w-4 text-muted-foreground" />
                     )}
                   </Button>
+                  {/* Input Field Sparkles */}
+                  <div className="absolute -top-1 -left-1 golden-input-sparkle" style={{animationDelay: '0.3s'}} />
                 </div>
                 {errors.password && (
                   <p className="text-sm text-destructive">{errors.password.message}</p>
                 )}
               </div>
 
-              <Button
-                type="submit"
-                className="w-full touch-target font-semibold"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Signing in...
-                  </>
-                ) : (
-                  'Sign In'
-                )}
-              </Button>
+              <div className="relative">
+                <Button
+                  type="submit"
+                  className="w-full touch-target font-semibold relative overflow-hidden"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Signing in...
+                    </>
+                  ) : (
+                    'Sign In'
+                  )}
+                  {/* Button Sparkles */}
+                  <div className="absolute top-1/2 left-1/4 golden-button-sparkle" />
+                  <div className="absolute top-1/4 right-1/4 golden-button-sparkle" style={{animationDelay: '0.7s'}} />
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>
 
-        <div className="mt-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            Pageantry Tabulation System v1.0
-          </p>
-        </div>
       </div>
     </div>
   );
 };
 
 export default LoginPage;
-
-

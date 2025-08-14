@@ -140,6 +140,13 @@ const JudgeDashboard = () => {
     }
   };
 
+  const scrollToCategory = (categoryId) => {
+    const element = document.getElementById(`category-${categoryId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   if (selectedCategory) {
     return (
       <CategoryVotingPage
@@ -218,7 +225,7 @@ const JudgeDashboard = () => {
                 const StatusIcon = getStatusIcon(status);
                 
                 return (
-                  <div key={category.id} className="text-center">
+                  <div key={category.id} className="text-center cursor-pointer" onClick={() => scrollToCategory(category.id)}>
                     <div className={`w-12 h-12 ${category.bgColor} rounded-full flex items-center justify-center mx-auto mb-2`}>
                       <category.icon className="h-6 w-6 text-white" />
                     </div>
@@ -235,7 +242,7 @@ const JudgeDashboard = () => {
         </Card>
 
         {/* Category Selection */}
-        <div>
+        <div id="category-selection-section">
           <h2 className="text-3xl font-bold mb-6 text-foreground text-center">Select Voting Category</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {categories.map((category) => {
@@ -247,6 +254,7 @@ const JudgeDashboard = () => {
               return (
                 <Card 
                   key={category.id}
+                  id={`category-${category.id}`}
                   className="bg-white/80 backdrop-blur-sm border-primary/20 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl group"
                   onClick={() => setSelectedCategory(category.id)}
                 >

@@ -207,14 +207,14 @@ const AddJudgeModal = ({
                 type="button"
                 variant="outline"
                 onClick={handleClose}
-                className="flex-1"
+                className="flex-1 cursor-pointer"
                 disabled={isLoading}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="flex-1"
+                className="flex-1 cursor-pointer"
                 disabled={isLoading}
               >
                 {isLoading ? (

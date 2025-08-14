@@ -287,6 +287,13 @@ const AdminDashboard = () => {
     return 'text-red-600';
   };
 
+  const getRankColor = (index) => {
+    if (index === 0) return "text-yellow-500";
+    if (index === 1) return "text-gray-400";
+    if (index === 2) return "text-amber-600";
+    return "";
+  };
+
   const formatScore = (score) => {
     return typeof score === 'number' ? score.toFixed(2) : '0.00';
   };
@@ -327,7 +334,7 @@ const AdminDashboard = () => {
                 onClick={logout}
                 className="bg-gradient-to-br from-primary/10 via-background to-accent/10 backdrop-blur-sm hover:bg-white hover:text-black"
               >
-                <LogOut className="h-4 w-4 mr-2" />
+                <LogOut className="h-4 w-4 mr-2 cursor-pointer" />
                 Logout
               </Button>
             </div>
@@ -417,10 +424,14 @@ const AdminDashboard = () => {
                       Manage pageant candidates and view their scores
                     </CardDescription>
                   </div>
-                  <Button onClick={() => setShowAddCandidateModal(true)}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Candidate
-                  </Button>
+                  <Button
+                onClick={() => setShowAddCandidateModal(true)}
+                className="cursor-pointer"
+              >
+                <Plus className="h-4 w-4 mr-2 ad" />
+                Add Candidate
+              </Button>
+
                 </div>
               </CardHeader>
               <CardContent>
@@ -480,7 +491,7 @@ const AdminDashboard = () => {
                               variant="ghost" 
                               size="sm"
                               onClick={() => handleEditCandidate(candidate)}
-                              className="btn-hover-scale"
+                              className="btn-hover-scale cursor-pointer"
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
@@ -488,7 +499,7 @@ const AdminDashboard = () => {
                               variant="ghost" 
                               size="sm"
                               onClick={() => handleDeleteCandidate(candidate)}
-                              className="btn-hover-scale text-red-600 hover:text-white-500"
+                              className="btn-hover-scale cursor-pointer"
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -513,7 +524,8 @@ const AdminDashboard = () => {
                       Manage judges and monitor their voting progress
                     </CardDescription>
                   </div>
-                  <Button onClick={() => setShowAddJudgeModal(true)}>
+                  <Button onClick={() => setShowAddJudgeModal(true)}
+                  className="cursor-pointer">
                     <Plus className="h-4 w-4 mr-2" />
                     Add Judge
                   </Button>
@@ -578,7 +590,7 @@ const AdminDashboard = () => {
                                 variant="ghost" 
                                 size="sm"
                                 onClick={() => handleEditJudge(judge)}
-                                className="btn-hover-scale"
+                                className="btn-hover-scale cursor-pointer"
                               >
                                 <Edit className="h-4 w-4" />
                               </Button>
@@ -586,7 +598,7 @@ const AdminDashboard = () => {
                                 variant="ghost" 
                                 size="sm"
                                 onClick={() => handleDeleteJudge(judge)}
-                                className="btn-hover-scale text-red-600 hover:text-red-700"
+                                className="btn-hover-scale text-red-600 hover:text-red-700 cursor-pointer"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
@@ -754,17 +766,17 @@ const AdminDashboard = () => {
                         </TableCell>
                         {filter === 'overall' ? (
                           <>
-                            <TableCell>{formatScore(item.scores_breakdown?.sports_attire)}</TableCell>
-                            <TableCell>{formatScore(item.scores_breakdown?.swimsuit)}</TableCell>
-                            <TableCell>{formatScore(item.scores_breakdown?.talent)}</TableCell>
-                            <TableCell>{formatScore(item.scores_breakdown?.gown)}</TableCell>
-                            <TableCell>{formatScore(item.scores_breakdown?.qa)}</TableCell>
-                            <TableCell className="font-bold">
+                            <TableCell className={getRankColor(index)}>{formatScore(item.scores_breakdown?.sports_attire)}</TableCell>
+                            <TableCell className={getRankColor(index)}>{formatScore(item.scores_breakdown?.swimsuit)}</TableCell>
+                            <TableCell className={getRankColor(index)}>{formatScore(item.scores_breakdown?.talent)}</TableCell>
+                            <TableCell className={getRankColor(index)}>{formatScore(item.scores_breakdown?.gown)}</TableCell>
+                            <TableCell className={getRankColor(index)}>{formatScore(item.scores_breakdown?.qa)}</TableCell>
+                            <TableCell className={`font-bold ${getRankColor(index)}`}>
                               {formatScore(item.total_score)}
                             </TableCell>
                           </>
                         ) : (
-                          <TableCell className="font-bold">
+                          <TableCell className={`font-bold ${getRankColor(index)}`}>
                             {formatScore(item.average_score)}
                           </TableCell>
                         )}
@@ -812,4 +824,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-

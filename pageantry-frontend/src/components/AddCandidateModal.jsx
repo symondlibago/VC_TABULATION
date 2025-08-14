@@ -192,6 +192,7 @@ const AddCandidateModal = ({
                     variant="outline"
                     size="sm"
                     onClick={() => document.getElementById('image').click()}
+                    className="cursor-pointer"
                   >
                     <Upload className="h-4 w-4 mr-2" />
                     {isEditMode ? 'Change Photo' : 'Upload Photo'}
@@ -246,14 +247,14 @@ const AddCandidateModal = ({
                 type="button"
                 variant="outline"
                 onClick={handleClose}
-                className="flex-1"
+                className="flex-1 cursor-pointer"
                 disabled={isLoading}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="flex-1"
+                className="flex-1 cursor-pointer"
                 disabled={isLoading}
               >
                 {isLoading ? (

@@ -118,6 +118,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Custom animations for pageantry system */
@@ -341,4 +344,393 @@
 /* Touch-friendly button sizes */
 .touch-target {
   @apply min-h-[44px] min-w-[44px];
+}
+
+/* ===== GOLDEN SPARKLE EFFECTS ===== */
+
+/* Golden Sparkle Base Styles */
+.golden-sparkle,
+.golden-form-sparkle,
+.golden-card-sparkle,
+.golden-crown-sparkle,
+.golden-title-sparkle,
+.golden-input-sparkle,
+.golden-button-sparkle,
+.golden-footer-sparkle {
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #ffd700 0%, #ffed4e 50%, transparent 70%);
+  border-radius: 50%;
+  position: absolute;
+  animation: goldenSparkle 3s infinite ease-in-out;
+  box-shadow: 0 0 8px #ffd700, 0 0 16px #ffd700, 0 0 24px #ffd700;
+}
+
+/* Different sizes for variety */
+.golden-sparkle:nth-child(3n+1) {
+  width: 6px;
+  height: 6px;
+  animation-duration: 2.5s;
+}
+
+.golden-sparkle:nth-child(3n+2) {
+  width: 3px;
+  height: 3px;
+  animation-duration: 4s;
+}
+
+/* Form-specific sparkles - smaller and more subtle */
+.golden-form-sparkle {
+  width: 3px;
+  height: 3px;
+  animation: goldenFormSparkle 2s infinite ease-in-out;
+}
+
+/* Card sparkles - medium intensity */
+.golden-card-sparkle {
+  width: 2px;
+  height: 2px;
+  animation: goldenCardSparkle 2.5s infinite ease-in-out;
+}
+
+/* Crown sparkles - special effect */
+.golden-crown-sparkle {
+  width: 2px;
+  height: 2px;
+  animation: goldenCrownSparkle 1.5s infinite ease-in-out;
+}
+
+/* Title sparkles */
+.golden-title-sparkle {
+  width: 3px;
+  height: 3px;
+  animation: goldenTitleSparkle 2s infinite ease-in-out;
+}
+
+/* Input field sparkles */
+.golden-input-sparkle {
+  width: 2px;
+  height: 2px;
+  animation: goldenInputSparkle 1.8s infinite ease-in-out;
+}
+
+/* Button sparkles */
+.golden-button-sparkle {
+  width: 3px;
+  height: 3px;
+  animation: goldenButtonSparkle 1.5s infinite ease-in-out;
+}
+
+/* Footer sparkles */
+.golden-footer-sparkle {
+  width: 2px;
+  height: 2px;
+  animation: goldenFooterSparkle 3s infinite ease-in-out;
+}
+
+/* Falling Stars */
+.golden-falling-star {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e, #ffffff);
+  /* Sparkle shape like ✨ emoji - cross with radiating points */
+  clip-path: polygon(50% 0%, 55% 20%, 80% 10%, 60% 35%, 100% 50%, 60% 65%, 80% 90%, 55% 80%, 50% 100%, 45% 80%, 20% 90%, 40% 65%, 0% 50%, 40% 35%, 20% 10%, 45% 20%);
+  position: absolute;
+  animation: fallingStarAnimation 6s infinite linear;
+  box-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700, 0 0 35px #ffd700; /* Enhanced golden glow */
+  top: -20px;
+}
+
+/* Popping Stars - multiply effect */
+.golden-pop-star {
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #ffd700 0%, #ffed4e 60%, transparent 100%);
+  /* Sparkle shape like ✨ emoji - cross with radiating points */
+  clip-path: polygon(50% 0%, 55% 20%, 80% 10%, 60% 35%, 100% 50%, 60% 65%, 80% 90%, 55% 80%, 50% 100%, 45% 80%, 20% 90%, 40% 65%, 0% 50%, 40% 35%, 20% 10%, 45% 20%);
+  position: absolute;
+  animation: popStarAnimation 4s infinite ease-in-out;
+  box-shadow: 0 0 12px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700; /* Enhanced golden glow */
+}
+
+/* ===== SPARKLE ANIMATIONS ===== */
+
+@keyframes goldenSparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1) rotate(90deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2) rotate(180deg);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(0.8) rotate(270deg);
+  }
+}
+
+@keyframes goldenFormSparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+    filter: brightness(1);
+  }
+  33% {
+    opacity: 0.9;
+    transform: scale(1.3) rotate(120deg);
+    filter: brightness(1.5);
+  }
+  66% {
+    opacity: 0.7;
+    transform: scale(0.9) rotate(240deg);
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes goldenCardSparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotateZ(0deg) rotateY(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotateZ(180deg) rotateY(180deg);
+    filter: brightness(2);
+  }
+}
+
+@keyframes goldenCrownSparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.5) rotate(90deg);
+    filter: hue-rotate(30deg) brightness(1.8);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1) rotate(180deg);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1.2) rotate(270deg);
+    filter: hue-rotate(-30deg) brightness(1.5);
+  }
+}
+
+@keyframes goldenTitleSparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) translateY(0px);
+  }
+  33% {
+    opacity: 1;
+    transform: scale(1.4) translateY(-3px);
+  }
+  66% {
+    opacity: 0.6;
+    transform: scale(0.8) translateY(2px);
+  }
+}
+
+@keyframes goldenInputSparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3) rotate(180deg);
+    filter: brightness(1.6);
+  }
+}
+
+@keyframes goldenButtonSparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  20% {
+    opacity: 0.8;
+    transform: scale(1.2) rotate(72deg);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.5) rotate(144deg);
+  }
+  60% {
+    opacity: 0.9;
+    transform: scale(1.1) rotate(216deg);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.3) rotate(288deg);
+  }
+}
+
+@keyframes goldenFooterSparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  25% {
+    opacity: 0.7;
+    transform: scale(1) rotate(90deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4) rotate(180deg);
+    filter: brightness(1.3);
+  }
+  75% {
+    opacity: 0.8;
+    transform: scale(0.9) rotate(270deg);
+  }
+}
+
+/* Falling Star Animation */
+@keyframes fallingStarAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) translateX(0px) rotate(0deg) scale(0);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(10vh) translateX(10px) rotate(36deg) scale(1);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(30vh) translateX(-5px) rotate(108deg) scale(1.2);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(70vh) translateX(15px) rotate(216deg) scale(0.9);
+  }
+  90% {
+    opacity: 0.3;
+    transform: translateY(95vh) translateX(-10px) rotate(324deg) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(110vh) translateX(0px) rotate(360deg) scale(0);
+  }
+}
+
+/* Pop Star Animation - Explosive Bursting and Scattering */
+@keyframes popStarAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg) translate(0px, 0px);
+  }
+  10% {
+    opacity: 1;
+    transform: scale(0.8) rotate(36deg) translate(0px, 0px);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(2.5) rotate(72deg) translate(0px, 0px); /* Explosive burst */
+    box-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700, 0 0 60px #ffd700;
+  }
+  30% {
+    opacity: 0.9;
+    transform: scale(1.2) rotate(108deg) translate(15px, -10px); /* Scatter right-up */
+  }
+  40% {
+    opacity: 0.8;
+    transform: scale(0.9) rotate(144deg) translate(-12px, 8px); /* Scatter left-down */
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.5) rotate(180deg) translate(8px, -15px); /* Scatter right-up */
+  }
+  60% {
+    opacity: 0.6;
+    transform: scale(0.7) rotate(216deg) translate(-18px, -5px); /* Scatter left-up */
+  }
+  70% {
+    opacity: 0.5;
+    transform: scale(1.1) rotate(252deg) translate(10px, 12px); /* Scatter right-down */
+  }
+  80% {
+    opacity: 0.4;
+    transform: scale(0.5) rotate(288deg) translate(-8px, -12px); /* Scatter left-up */
+  }
+  90% {
+    opacity: 0.2;
+    transform: scale(0.3) rotate(324deg) translate(5px, 8px); /* Final scatter */
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg) translate(0px, 0px);
+  }
+}
+
+/* Enhanced sparkle variations for different timing */
+.golden-sparkle:nth-child(5n+1) {
+  animation-delay: 0.2s;
+  filter: hue-rotate(15deg);
+}
+
+.golden-sparkle:nth-child(5n+2) {
+  animation-delay: 0.8s;
+  filter: hue-rotate(-15deg);
+}
+
+.golden-sparkle:nth-child(5n+3) {
+  animation-delay: 1.5s;
+  filter: brightness(1.3);
+}
+
+.golden-sparkle:nth-child(5n+4) {
+  animation-delay: 2.1s;
+  filter: hue-rotate(30deg) brightness(0.9);
+}
+
+.golden-sparkle:nth-child(5n+5) {
+  animation-delay: 2.8s;
+  filter: hue-rotate(-30deg) brightness(1.1);
+}
+
+/* Falling star variations */
+.golden-falling-star:nth-child(3n+1) {
+  animation-duration: 5s;
+  filter: hue-rotate(20deg);
+}
+
+.golden-falling-star:nth-child(3n+2) {
+  animation-duration: 7s;
+  filter: brightness(1.2);
+}
+
+.golden-falling-star:nth-child(3n+3) {
+  animation-duration: 6s;
+  filter: hue-rotate(-20deg) brightness(0.9);
+}
+
+/* Pop star variations */
+.golden-pop-star:nth-child(4n+1) {
+  animation-duration: 3.5s;
+  filter: hue-rotate(25deg);
+}
+
+.golden-pop-star:nth-child(4n+2) {
+  animation-duration: 4.5s;
+  filter: brightness(1.3);
+}
+
+.golden-pop-star:nth-child(4n+3) {
+  animation-duration: 3s;
+  filter: hue-rotate(-25deg);
+}
+
+.golden-pop-star:nth-child(4n+4) {
+  animation-duration: 5s;
+  filter: brightness(0.8) hue-rotate(45deg);
 }

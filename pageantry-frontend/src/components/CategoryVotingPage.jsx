@@ -13,7 +13,8 @@ import {
   User,
   Loader2,
   Send,
-  AlertCircle
+  AlertCircle,
+  Calculator
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -29,6 +30,7 @@ const CategoryVotingPage = ({ category, onBack }) => {
   const [candidates, setCandidates] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState('');
+  const [subCategoryScores, setSubCategoryScores] = useState({});
   const [progress, setProgress] = useState({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -42,13 +44,67 @@ const CategoryVotingPage = ({ category, onBack }) => {
     qa: { name: 'Q&A', weight: '30%', icon: User, color: 'bg-green-600' },
   };
 
+  // Sub-category definitions with weights
+  const subCategories = {
+    sports_attire: [
+      { key: 'fitness_physique', name: 'Fitness & Physique', weight: 40, maxScore: 40 },
+      { key: 'athletic_wear', name: 'Athletic Wear & Style', weight: 30, maxScore: 30 },
+      { key: 'confidence_stage', name: 'Confidence & Stage Presence', weight: 30, maxScore: 30 }
+    ],
+    swimsuit: [
+      { key: 'fitness_toning', name: 'Fitness & Toning', weight: 40, maxScore: 40 },
+      { key: 'confidence_stage', name: 'Confidence & Stage Presence', weight: 40, maxScore: 40 },
+      { key: 'elegance_styling', name: 'Elegance & Styling', weight: 20, maxScore: 20 }
+    ],
+    talent: [
+      { key: 'skill_execution', name: 'Skill & Execution', weight: 50, maxScore: 50 },
+      { key: 'creativity_originality', name: 'Creativity & Originality', weight: 30, maxScore: 30 },
+      { key: 'stage_presence', name: 'Stage Presence & Charisma', weight: 20, maxScore: 20 }
+    ],
+    gown: [
+      { key: 'elegance_grace', name: 'Elegance & Grace', weight: 35, maxScore: 35 },
+      { key: 'gown_style', name: 'Gown Style & Fit', weight: 25, maxScore: 25 },
+      { key: 'poise_confidence', name: 'Poise & Confidence', weight: 25, maxScore: 25 },
+      { key: 'overall_presentation', name: 'Overall Presentation', weight: 15, maxScore: 15 }
+    ],
+    qa: [
+      { key: 'content_substance', name: 'Content & Substance', weight: 40, maxScore: 40 },
+      { key: 'communication_clarity', name: 'Communication & Clarity', weight: 30, maxScore: 30 },
+      { key: 'confidence_delivery', name: 'Confidence & Delivery', weight: 20, maxScore: 20 },
+      { key: 'relevance_insight', name: 'Relevance & Insight', weight: 10, maxScore: 10 }
+    ]
+  };
+
   const currentCategory = categories[category];
   const currentCandidate = candidates[currentIndex];
+  const currentSubCategories = subCategories[category] || [];
+
+  // Calculate total score from sub-category scores
+  const calculateTotalScore = () => {
+    let total = 0;
+    currentSubCategories.forEach(subCat => {
+      const subScore = parseFloat(subCategoryScores[subCat.key] || 0);
+      total += subScore;
+    });
+    return Math.min(total, 100); // Ensure it doesn't exceed 100
+  };
+
+  // Update main score when sub-category scores change
+  useEffect(() => {
+    const totalScore = calculateTotalScore();
+    setScore(totalScore.toString());
+  }, [subCategoryScores]);
 
   // Load candidates for current category
   useEffect(() => {
     loadCandidatesForJudging();
   }, [category]);
+
+  // Reset sub-category scores when candidate changes
+  useEffect(() => {
+    setSubCategoryScores({});
+    setScore('');
+  }, [currentIndex, category]);
 
   const loadCandidatesForJudging = async () => {
     try {
@@ -75,6 +131,7 @@ const CategoryVotingPage = ({ category, onBack }) => {
       }
       
       setScore('');
+      setSubCategoryScores({});
     } catch (error) {
       console.error('Error loading candidates:', error);
       if (error.response?.status === 404) {
@@ -85,6 +142,18 @@ const CategoryVotingPage = ({ category, onBack }) => {
       setCandidates([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSubCategoryScoreChange = (subCatKey, value) => {
+    const numValue = parseFloat(value) || 0;
+    const subCat = currentSubCategories.find(sc => sc.key === subCatKey);
+    
+    if (subCat && numValue >= 0 && numValue <= subCat.maxScore) {
+      setSubCategoryScores(prev => ({
+        ...prev,
+        [subCatKey]: value
+      }));
     }
   };
 
@@ -127,6 +196,7 @@ const CategoryVotingPage = ({ category, onBack }) => {
       if (nextUnvotedIndex !== -1) {
         setCurrentIndex(nextUnvotedIndex);
         setScore('');
+        setSubCategoryScores({});
         setMessage(`Score submitted! Moving to next candidate.`);
       } else {
         setMessage(`Score submitted! All candidates in ${currentCategory.name} category completed.`);
@@ -147,6 +217,7 @@ const CategoryVotingPage = ({ category, onBack }) => {
     
     setCurrentIndex(newIndex);
     setScore('');
+    setSubCategoryScores({});
     setMessage('');
   };
 
@@ -275,26 +346,58 @@ const CategoryVotingPage = ({ category, onBack }) => {
                   </Alert>
                 ) : (
                   <div className="space-y-6">
+                    {/* Sub-Category Scoring */}
+                    <div className="max-w-2xl mx-auto">
+                      <h3 className="text-lg font-semibold text-white mb-4 flex items-center justify-center">
+                        <Calculator className="h-5 w-5 mr-2" />
+                        Sub-Category Scoring
+                      </h3>
+                      <div className="space-y-3">
+                        {currentSubCategories.map((subCat) => (
+                          <div key={subCat.key} className="flex items-center justify-between">
+                            <div className="flex items-center space-x-3 flex-1">
+                              <Label className="text-sm font-medium text-white">
+                                {subCat.name}
+                              </Label>
+                              <span className="text-sm text-blue-200">
+                                {subCat.weight}%
+                              </span>
+                            </div>
+                            <Input
+                              type="number"
+                              min="0"
+                              max={subCat.maxScore}
+                              step="0.01"
+                              value={subCategoryScores[subCat.key] || ''}
+                              onChange={(e) => handleSubCategoryScoreChange(subCat.key, e.target.value)}
+                              placeholder={`0-${subCat.maxScore}`}
+                              className="w-20 text-center bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Total Score Display */}
                     <div className="max-w-xs mx-auto">
                       <Label htmlFor="score" className="text-lg font-medium text-white">
-                        Enter Score (0-100)
+                        Total Score (Auto-calculated)
                       </Label>
                       <Input
                         id="score"
                         type="number"
-                        min="0"
-                        max="100"
-                        step="0.01"
                         value={score}
-                        onChange={(e) => setScore(e.target.value)}
-                        placeholder="Enter score..."
-                        className="text-center text-2xl h-16 mt-3 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400"
+                        readOnly
+                        className="text-center text-2xl h-16 mt-3 bg-green-500/20 border-green-500/30 text-green-100 font-bold cursor-not-allowed"
                       />
+                      <p className="text-xs text-blue-200 mt-2 text-center">
+                        This score is automatically calculated from sub-categories above
+                      </p>
                     </div>
 
                     <Button
                       onClick={handleScoreSubmit}
-                      disabled={!score || submitting || currentCandidate.has_voted}
+                      disabled={!score || submitting || currentCandidate.has_voted || parseFloat(score) === 0}
                       className="w-full max-w-xs mx-auto h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                     >
                       {submitting ? (
@@ -305,7 +408,7 @@ const CategoryVotingPage = ({ category, onBack }) => {
                       ) : (
                         <>
                           <Send className="mr-2 h-5 w-5" />
-                          Submit Score
+                          Submit Score ({score})
                         </>
                       )}
                     </Button>
